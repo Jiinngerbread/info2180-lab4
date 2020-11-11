@@ -64,7 +64,7 @@ $superheroes = [
 ];
 
 $r = "";
-$recv = strtolower($_REQUEST["name"]);
+$recv = strtolower($_REQUEST["query"]);
 $recv = filter_var($recv, FILTER_SANITIZE_STRING);
 $recv = trim($recv);
 
