@@ -63,10 +63,30 @@ $superheroes = [
   ], 
 ];
 
-?>
+$r = "";
+$recv = strtolower($_REQUEST["name"]);
+$recv = filter_var($recv, FILTER_SANITIZE_STRING);
+$recv = trim($recv);
 
-<ul>
-<?php foreach ($superheroes as $superhero): ?>
-  <li><?= $superhero['alias']; ?></li>
-<?php endforeach; ?>
-</ul>
+if ($recv != "" && $_SERVER["REQUEST_METHOD"] === "GET") {
+    foreach ($superheroes as $superhero) {
+        if ($recv === strtolower($superhero["alias"]) || $recv === strtolower($superhero["name"])) {
+            $data = "<h3>".$superhero["alias"]."</h3><h4>".$superhero["name"]."</h4><p>".$superhero["biography"]."</p>";
+            $r = $r.$data;
+        }
+    }
+    if ($r != "") {
+        echo $r;
+    } else {
+        echo "Superhero not found";
+    }
+}else{
+    ?>
+        <ul>
+            <?php foreach ($superheroes as $superhero): ?>
+                <li><?= $superhero['alias']; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php
+}
+?>

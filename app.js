@@ -1,27 +1,44 @@
-window.onload = function () {
-    var httpRequest = new XMLHttpRequest();
-    var button = document.getElementsByClassName("btn");
 
-    button[0].addEventListener("click", function (bttn) {
+const query = document.getElementById("input");
+const resultSect = document.getElementById("result");
 
-        bttn.preventDefault();
-        var srcURL = "http://localhost/info2180-lab4/superheroes.php";
-        httpRequest.open('GET', srcURL, false);
-        httpRequest.send();
-        httpRequest.onreadystatechange = main();
+document.addEventListener("DOMContentLoaded", starter);
 
-    });
+function starter(){
+    document.getElementById("search").addEventListener("click", processRqst);
+    //button.preventDefault();
+    if(resultSect != null){
+        resultSect.classList.remove("red");
 
-    function main() {
+    };
+}
 
-        if (httpRequest.readyState == 3) { console.log("1"); }
-        console.log(httpRequest.readyState)
-        console.log(httpRequest.status)
-        if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
-            var forAlert = httpRequest.responseText;
-            alert(forAlert);
-        } else {
-            alert('There was a problem with the request.');
+    // var queriedHero = document.getElementsByClassName("inputField").value;
+
+
+function processRqst() {
+
+    const hr = new XMLHttpRequest();
+
+    //if (httpRequest.readyState == 3) { console.log("1"); }
+    //console.log(httpRequest.readyState)
+    console.log(hr.status);
+    hr.onreadystatechange = function(){
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            resultSect.innerHTML = this.responseText;
+            if(this.responseText != "Superhero not found"){
+                resultSect.classList.remove("red-alert");
+            }else{
+                resultSect.classList.add("red-alert");
+            }
+            //alert(forAlert);
         }
-    } console.log("4");
+        // else {
+        //    alert('There was a problem with the request.');
+    // }
+    }; 
+    //console.log("4");
+    hr.open("GET", "superheroes.php?query=" + query.value, true);
+    hr.send();
+    query.value = "";
 } 
